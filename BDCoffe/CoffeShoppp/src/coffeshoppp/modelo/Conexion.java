@@ -19,7 +19,7 @@ public class Conexion {
         return cn;
     }
 
-    // Constructo para pasar datos a la conexion
+    // Constructor para pasar datos a la conexion
     public Conexion(String usuario, String pass, String url) {
         this.usuario = usuario;
         this.pass = pass;

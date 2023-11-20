@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-import coffeshoppp.vistas.frm_register;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.MessageDigest;
@@ -44,22 +43,35 @@ public class frm_login extends javax.swing.JFrame {
         txt_pass = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         btn_register = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Café con leche System");
+        jLabel1.setFont(new java.awt.Font("Cambria Math", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 102, 51));
+        jLabel1.setText("Inicia Sesión");
 
-        jLabel2.setText("Usuario");
+        jLabel2.setFont(new java.awt.Font("Calibri", 3, 14)); // NOI18N
+        jLabel2.setText("Usuario*");
 
-        btn_login.setText("Login");
+        btn_login.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        btn_login.setText("Iniciar sesión");
         btn_login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_loginActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Contraseña");
+        txt_login.setFont(new java.awt.Font("Calibri Light", 0, 12)); // NOI18N
 
+        txt_pass.setFont(new java.awt.Font("Calibri Light", 0, 12)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Calibri", 3, 14)); // NOI18N
+        jLabel3.setText("Contraseña*");
+
+        btn_register.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        btn_register.setForeground(new java.awt.Color(0, 51, 51));
         btn_register.setText("No tengo una cuenta, registrarme");
         btn_register.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -67,46 +79,70 @@ public class frm_login extends javax.swing.JFrame {
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel1.setForeground(new java.awt.Color(102, 153, 0));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(111, 111, 111)
+                .addComponent(jLabel4)
+                .addContainerGap(137, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(96, 96, 96)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(219, 219, 219)
-                        .addComponent(jLabel1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3)
+                                .addComponent(txt_login, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                                .addComponent(txt_pass))
+                            .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(107, 107, 107)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn_login)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                                .addComponent(btn_register))
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(txt_pass)
-                            .addComponent(txt_login))))
-                .addContainerGap(132, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
+                        .addComponent(btn_register)
+                        .addGap(35, 35, 35))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(44, 44, 44)
                 .addComponent(jLabel1)
-                .addGap(65, 65, 65)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_login, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txt_login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txt_pass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_login)
-                    .addComponent(btn_register))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addComponent(txt_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addComponent(btn_register, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addGap(26, 26, 26))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -154,9 +190,11 @@ public class frm_login extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Login Exitoso");
 
                             // Assuming 'inicio' is an instance of your main form
-                            frm_inicio inicio = new frm_inicio();
-                            inicio.setVisible(true);
-                            this.setVisible(false);
+                            String rol = rs.getString("id_rol");
+                            TipoUsuario(rol);
+//                            frm_inicio inicio = new frm_inicio();
+//                            inicio.setVisible(true);
+//                            this.setVisible(false);
                         }else{
                             //usuario no encontrado
                             txt_login.setText("");
@@ -199,7 +237,27 @@ public class frm_login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     
-    // Asumiendo que el método hashPassword está definido en tu clase
+    private void TipoUsuario(String rol) {
+        switch (rol) {
+            case "2" -> {
+                frm_cocinero frm_cocinero = new frm_cocinero();
+                frm_cocinero.setVisible(true);
+                this.setVisible(false);
+            }
+            case "3" -> {
+                frm_cajero frm_cajero = new frm_cajero();
+                frm_cajero.setVisible(true);
+                this.setVisible(false);
+            }
+            default -> {
+                frm_inicio inicio = new frm_inicio();
+                inicio.setVisible(true);
+                this.setVisible(false);
+            }
+        }
+    }
+    
+    // método hashPassword 
     private String hashPassword(String password) throws NoSuchAlgorithmException {
         // Implementa la lógica para aplicar el hash a la contraseña
         // Por ejemplo, usando SHA-256
@@ -253,6 +311,8 @@ public class frm_login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txt_login;
     private javax.swing.JPasswordField txt_pass;
     // End of variables declaration//GEN-END:variables
