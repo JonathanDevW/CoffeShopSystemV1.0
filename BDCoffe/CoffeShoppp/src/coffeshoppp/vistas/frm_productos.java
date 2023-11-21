@@ -27,7 +27,10 @@ public class frm_productos extends javax.swing.JFrame {
         
         combobox_categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bebida", "Postre", "Snack" }));
         
+        btn_modificar_producto.setVisible(false);
+        btn_eliminar_producto.setVisible(false);
         updateProductTable();
+
     }
 
     /**
@@ -56,6 +59,10 @@ public class frm_productos extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         precio_producto = new javax.swing.JTextField();
         btn_insertar_productos = new javax.swing.JButton();
+        txt_codigo_producto = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        btn_modificar_producto = new javax.swing.JButton();
+        btn_eliminar_producto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,11 +85,18 @@ public class frm_productos extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tabla_productos.setColumnSelectionAllowed(true);
@@ -93,7 +107,7 @@ public class frm_productos extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(tabla_productos);
-        tabla_productos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tabla_productos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         jLabel6.setFont(new java.awt.Font("Consolas", 3, 24)); // NOI18N
         jLabel6.setText("En existencia");
@@ -105,9 +119,11 @@ public class frm_productos extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,13 +132,13 @@ public class frm_productos extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel1.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
-        jLabel1.setText("Insertar productos");
+        jLabel1.setText("Productos");
 
         jLabel2.setFont(new java.awt.Font("Calibri", 3, 14)); // NOI18N
         jLabel2.setText("Nombre del producto*");
@@ -155,36 +171,64 @@ public class frm_productos extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setText("Codigo:");
+
+        btn_modificar_producto.setText("Modificar");
+        btn_modificar_producto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modificar_productoActionPerformed(evt);
+            }
+        });
+
+        btn_eliminar_producto.setText("Eliminar");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addComponent(jLabel3)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_nombre_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(21, 21, 21)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(combobox_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(precio_producto, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
-                    .addComponent(btn_insertar_productos))
-                .addGap(43, 43, 43))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_nombre_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_codigo_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel5)
+                            .addComponent(combobox_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btn_insertar_productos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_modificar_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_eliminar_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap(41, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txt_codigo_producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel5))
@@ -201,7 +245,10 @@ public class frm_productos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(precio_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btn_insertar_productos, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_eliminar_producto, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                    .addComponent(btn_insertar_productos, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                    .addComponent(btn_modificar_producto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(24, 24, 24))
         );
 
@@ -213,10 +260,10 @@ public class frm_productos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(btn_regresar))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_regresar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -224,11 +271,11 @@ public class frm_productos extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
                 .addComponent(btn_regresar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         pack();
@@ -240,6 +287,28 @@ public class frm_productos extends javax.swing.JFrame {
 
     private void tabla_productosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_productosMouseClicked
         // TODO add your handling code here:
+        
+        int filaSeleccionada = tabla_productos.getSelectedRow();
+        
+        if (filaSeleccionada != -1) {
+        int codigo = (int) tabla_productos.getValueAt(filaSeleccionada, 0);
+        var categoria = (String) tabla_productos.getValueAt(filaSeleccionada, 1);
+        var nombreProducto = (String) tabla_productos.getValueAt(filaSeleccionada, 2);
+        var descripcion = (String) tabla_productos.getValueAt(filaSeleccionada, 3);
+        double precio = (double) tabla_productos.getValueAt(filaSeleccionada, 4);
+
+        // Llenar los campos con los datos de la fila seleccionada
+        txt_codigo_producto.setText(Integer.toString(codigo));
+        txt_nombre_producto.setText(nombreProducto);
+        combobox_categoria.setSelectedItem(categoria);
+        txt_descripcion.setText(descripcion);
+        precio_producto.setText(String.valueOf(precio));
+        
+        btn_insertar_productos.setVisible(false);
+        btn_modificar_producto.setVisible(true);
+        btn_eliminar_producto.setVisible(true);
+        txt_codigo_producto.setEditable(false);
+        }
     }//GEN-LAST:event_tabla_productosMouseClicked
 
     private void btn_insertar_productosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_insertar_productosActionPerformed
@@ -306,7 +375,7 @@ public class frm_productos extends javax.swing.JFrame {
                             resultSet.getString("nombre_categoria"),  
                             resultSet.getString("nombre_producto"), 
                             resultSet.getString("descripcion"),  // 
-                            resultSet.getDouble("precio")
+                            resultSet.getDouble("precio"),
                         };
                         model.addRow(row);
                     }
@@ -320,12 +389,63 @@ public class frm_productos extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_btn_insertar_productosActionPerformed
 
+    
     private void btn_regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_regresarActionPerformed
         // TODO add your handling code here:
         frm_inicio frm_inicio = new frm_inicio();
         frm_inicio.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btn_regresarActionPerformed
+
+    private void btn_modificar_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificar_productoActionPerformed
+        // TODO add your handling code here:
+            String codigo = txt_codigo_producto.getText();
+            String nombreProducto = txt_nombre_producto.getText();
+            String descripcion = txt_descripcion.getText();
+            String categoria = combobox_categoria.getSelectedItem().toString();
+            String precio = precio_producto.getText();
+            Conexion conexion = null;
+            
+            
+            if (nombreProducto.isEmpty() || descripcion.isEmpty() || categoria.isEmpty() || precio.isEmpty()){
+                JOptionPane.showMessageDialog(null, "Todos los campos son requerido");
+            } else {
+               try {
+                
+                // coonectando a la base de datos
+                conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                conexion.conectar();
+
+                // insertando a la BD
+                    String insertQuery = "UPDATE producto SET id_categoria = (SELECT id_categoria FROM categoria WHERE nombre_categoria = ?), nombre_producto = ?, descripcion = ?, precio = ? WHERE id_producto = ?";
+                    try (PreparedStatement preparedStatement = conexion.prepareStatement(insertQuery)) {
+                        preparedStatement.setString(1, categoria); // Aquí obtienes el id_categoria correspondiente al nombre de la categoría
+                        preparedStatement.setString(2, nombreProducto);
+                        preparedStatement.setString(3, descripcion);
+                        preparedStatement.setFloat(4, Float.parseFloat(precio));
+                        preparedStatement.setString(5, codigo); // Aquí utilizas el id_producto
+
+                    int affectedRows = preparedStatement.executeUpdate();
+                    if (affectedRows > 0) {
+                        JOptionPane.showMessageDialog(null, "Producto actualizado correctamente.");
+                        btn_modificar_producto.setVisible(false);
+                        btn_eliminar_producto.setVisible(false);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al actualizar el producto.");
+                    }
+                }
+
+                // Actuallizando la Jtable
+                updateProductTable();
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            } finally {
+                 conexion.desconectar();
+            }
+        }
+        
+    }//GEN-LAST:event_btn_modificar_productoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -361,7 +481,9 @@ public class frm_productos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_eliminar_producto;
     private javax.swing.JButton btn_insertar_productos;
+    private javax.swing.JButton btn_modificar_producto;
     private javax.swing.JButton btn_regresar;
     private javax.swing.JComboBox<String> combobox_categoria;
     private javax.swing.JLabel jLabel1;
@@ -370,12 +492,14 @@ public class frm_productos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField precio_producto;
     private javax.swing.JTable tabla_productos;
+    private javax.swing.JTextField txt_codigo_producto;
     private javax.swing.JTextArea txt_descripcion;
     private javax.swing.JTextField txt_nombre_producto;
     // End of variables declaration//GEN-END:variables

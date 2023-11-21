@@ -28,7 +28,7 @@ public class frm_register extends javax.swing.JFrame {
     public frm_register() {
         initComponents();
         
-        txt_combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"Cocinero", "Cajero" }));
+        txt_combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"Admin", "Cocinero", "Cajero" }));
     }
     
         private boolean usuarioYaExiste(String nombreUsuario, Conexion conexion) throws SQLException {
