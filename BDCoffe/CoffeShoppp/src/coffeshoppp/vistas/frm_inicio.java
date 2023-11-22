@@ -58,7 +58,7 @@ public class frm_inicio extends javax.swing.JFrame {
         });
 
         jButton1.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
-        jButton1.setText("INSERTAR PRODUCTOS");
+        jButton1.setText("INGRESAR PRODUCTOS");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);

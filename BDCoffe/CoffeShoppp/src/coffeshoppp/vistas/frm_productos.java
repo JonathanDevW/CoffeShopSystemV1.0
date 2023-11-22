@@ -7,6 +7,8 @@
     import java.sql.PreparedStatement;
     import java.sql.ResultSet;
     import java.sql.SQLException;
+    import java.util.logging.Level;
+    import java.util.logging.Logger;
     import javax.swing.JOptionPane;
     import javax.swing.table.DefaultTableModel;  // Correct placement
 
@@ -63,6 +65,7 @@ public class frm_productos extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         btn_modificar_producto = new javax.swing.JButton();
         btn_eliminar_producto = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,7 +102,7 @@ public class frm_productos extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tabla_productos.setColumnSelectionAllowed(true);
+        tabla_productos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tabla_productos.setGridColor(new java.awt.Color(153, 255, 255));
         tabla_productos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -108,6 +111,10 @@ public class frm_productos extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tabla_productos);
         tabla_productos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        if (tabla_productos.getColumnModel().getColumnCount() > 0) {
+            tabla_productos.getColumnModel().getColumn(0).setResizable(false);
+            tabla_productos.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         jLabel6.setFont(new java.awt.Font("Consolas", 3, 24)); // NOI18N
         jLabel6.setText("En existencia");
@@ -181,6 +188,18 @@ public class frm_productos extends javax.swing.JFrame {
         });
 
         btn_eliminar_producto.setText("Eliminar");
+        btn_eliminar_producto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminar_productoActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Limpiar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -191,9 +210,6 @@ public class frm_productos extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(precio_producto, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_nombre_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -208,11 +224,18 @@ public class frm_productos extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(combobox_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btn_insertar_productos)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_insertar_productos)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(precio_producto, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_modificar_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_eliminar_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(btn_modificar_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btn_eliminar_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -228,7 +251,7 @@ public class frm_productos extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel5))
@@ -243,12 +266,15 @@ public class frm_productos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(precio_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btn_eliminar_producto, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
-                    .addComponent(btn_insertar_productos, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
-                    .addComponent(btn_modificar_producto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(precio_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btn_eliminar_producto, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                            .addComponent(btn_insertar_productos, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                            .addComponent(btn_modificar_producto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButton1))
                 .addGap(24, 24, 24))
         );
 
@@ -341,6 +367,7 @@ public class frm_productos extends javax.swing.JFrame {
                     int affectedRows = preparedStatement.executeUpdate();
                     if (affectedRows > 0) {
                         JOptionPane.showMessageDialog(null, "Producto agregado correctamente.");
+                        limpiarCampos();
                     } else {
                         JOptionPane.showMessageDialog(null, "Error al agregar el producto.");
                     }
@@ -417,8 +444,8 @@ public class frm_productos extends javax.swing.JFrame {
                 conexion.conectar();
 
                 // insertando a la BD
-                    String insertQuery = "UPDATE producto SET id_categoria = (SELECT id_categoria FROM categoria WHERE nombre_categoria = ?), nombre_producto = ?, descripcion = ?, precio = ? WHERE id_producto = ?";
-                    try (PreparedStatement preparedStatement = conexion.prepareStatement(insertQuery)) {
+                    String updateQuery = "UPDATE producto SET id_categoria = (SELECT id_categoria FROM categoria WHERE nombre_categoria = ?), nombre_producto = ?, descripcion = ?, precio = ? WHERE id_producto = ?";
+                    try (PreparedStatement preparedStatement = conexion.prepareStatement(updateQuery)) {
                         preparedStatement.setString(1, categoria); // Aquí obtienes el id_categoria correspondiente al nombre de la categoría
                         preparedStatement.setString(2, nombreProducto);
                         preparedStatement.setString(3, descripcion);
@@ -430,6 +457,8 @@ public class frm_productos extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Producto actualizado correctamente.");
                         btn_modificar_producto.setVisible(false);
                         btn_eliminar_producto.setVisible(false);
+                        limpiarCampos();
+                        btn_insertar_productos.setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(null, "Error al actualizar el producto.");
                     }
@@ -447,9 +476,54 @@ public class frm_productos extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btn_modificar_productoActionPerformed
 
+    private void btn_eliminar_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar_productoActionPerformed
+        // TODO add your handling code here:
+        int codigo = Integer.parseInt(txt_codigo_producto.getText());
+        
+        conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+        conexion.conectar();
+        
+        String deleteQuery = "DELETE FROM producto WHERE id_producto = "+codigo+";";
+            
+        try {
+            PreparedStatement preparedStatement = conexion.prepareStatement(deleteQuery);
+            
+            preparedStatement.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Producto eliminado correctamente");
+            
+            limpiarCampos();
+            updateProductTable();
+            btn_modificar_producto.setVisible(false);
+            btn_eliminar_producto.setVisible(false);
+            btn_insertar_productos.setVisible(true);
+           
+                        
+        } catch (SQLException ex) {
+            Logger.getLogger(frm_productos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btn_eliminar_productoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        limpiarCampos();
+        btn_modificar_producto.setVisible(false);
+        btn_eliminar_producto.setVisible(false);
+        btn_insertar_productos.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
+    
+    private void limpiarCampos() {
+    txt_codigo_producto.setText("");
+    txt_nombre_producto.setText("");
+    combobox_categoria.setSelectedItem("");
+    txt_descripcion.setText("");
+    precio_producto.setText("");
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -486,6 +560,7 @@ public class frm_productos extends javax.swing.JFrame {
     private javax.swing.JButton btn_modificar_producto;
     private javax.swing.JButton btn_regresar;
     private javax.swing.JComboBox<String> combobox_categoria;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
