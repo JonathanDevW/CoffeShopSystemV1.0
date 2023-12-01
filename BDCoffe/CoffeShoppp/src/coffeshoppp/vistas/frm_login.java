@@ -56,6 +56,7 @@ public class frm_login extends javax.swing.JFrame {
         jLabel2.setText("Usuario*");
 
         btn_login.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        btn_login.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/login_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         btn_login.setText("Iniciar sesión");
         btn_login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -89,14 +90,14 @@ public class frm_login extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(111, 111, 111)
+                .addGap(75, 75, 75)
                 .addComponent(jLabel4)
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(96, 96, 96)
+                .addGap(100, 100, 100)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -107,22 +108,22 @@ public class frm_login extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel2)
                                 .addComponent(jLabel3)
                                 .addComponent(txt_login, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                                 .addComponent(txt_pass))
-                            .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(71, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_register)
-                        .addGap(35, 35, 35))))
+                        .addGap(20, 20, 20))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,9 +140,9 @@ public class frm_login extends javax.swing.JFrame {
                 .addComponent(txt_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addGap(53, 53, 53)
                 .addComponent(btn_register, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                .addGap(26, 26, 26))
+                .addGap(21, 21, 21))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -187,9 +188,7 @@ public class frm_login extends javax.swing.JFrame {
                     int encontrado = rs.getRow();
                         if (encontrado == 1){
                             Sesion.setNombreUsuario(User);
-                            JOptionPane.showMessageDialog(null, "Login Exitoso");
 
-                            // Assuming 'inicio' is an instance of your main form
                             String rol = rs.getString("id_rol");
                             TipoUsuario(rol);
 //                            frm_inicio inicio = new frm_inicio();
@@ -239,12 +238,12 @@ public class frm_login extends javax.swing.JFrame {
     
     private void TipoUsuario(String rol) {
         switch (rol) {
-            case "2" -> {
+            case "3" -> {
                 frm_cocinero frm_cocinero = new frm_cocinero();
                 frm_cocinero.setVisible(true);
                 this.setVisible(false);
             }
-            case "3" -> {
+            case "2" -> {
                 frm_cajero frm_cajero = new frm_cajero();
                 frm_cajero.setVisible(true);
                 this.setVisible(false);
