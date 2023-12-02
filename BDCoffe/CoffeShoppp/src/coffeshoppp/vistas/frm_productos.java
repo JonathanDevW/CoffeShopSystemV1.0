@@ -4,13 +4,15 @@
  */
     package coffeshoppp.vistas;
     import coffeshoppp.modelo.Conexion;
+import java.math.BigDecimal;
     import java.sql.PreparedStatement;
     import java.sql.ResultSet;
     import java.sql.SQLException;
     import java.util.logging.Level;
     import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
     import javax.swing.JOptionPane;
-    import javax.swing.table.DefaultTableModel;  // Correct placement
+    import javax.swing.table.DefaultTableModel; 
 
 /**
  *
@@ -27,12 +29,11 @@ public class frm_productos extends javax.swing.JFrame {
     public frm_productos() {
         initComponents();
         
-        combobox_categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bebida", "Postre", "Snack" }));
         
         btn_modificar_producto.setVisible(false);
         btn_eliminar_producto.setVisible(false);
         updateProductTable();
-
+        llenacomboboxCategorias();
     }
 
     /**
@@ -102,6 +103,7 @@ public class frm_productos extends javax.swing.JFrame {
         });
         tabla_productos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tabla_productos.setGridColor(new java.awt.Color(153, 255, 255));
+        tabla_productos.getTableHeader().setReorderingAllowed(false);
         tabla_productos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabla_productosMouseClicked(evt);
@@ -111,7 +113,6 @@ public class frm_productos extends javax.swing.JFrame {
         tabla_productos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         if (tabla_productos.getColumnModel().getColumnCount() > 0) {
             tabla_productos.getColumnModel().getColumn(0).setResizable(false);
-            tabla_productos.getColumnModel().getColumn(4).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -297,6 +298,7 @@ public class frm_productos extends javax.swing.JFrame {
 
     private void combobox_categoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combobox_categoriaActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_combobox_categoriaActionPerformed
 
     private void tabla_productosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_productosMouseClicked
@@ -309,7 +311,7 @@ public class frm_productos extends javax.swing.JFrame {
         var categoria = (String) tabla_productos.getValueAt(filaSeleccionada, 1);
         var nombreProducto = (String) tabla_productos.getValueAt(filaSeleccionada, 2);
         var descripcion = (String) tabla_productos.getValueAt(filaSeleccionada, 3);
-        double precio = (double) tabla_productos.getValueAt(filaSeleccionada, 4);
+        float precio = (float) tabla_productos.getValueAt(filaSeleccionada, 4);
 
         // Llenar los campos con los datos de la fila seleccionada
         txt_codigo_producto.setText(Integer.toString(codigo));
@@ -327,30 +329,28 @@ public class frm_productos extends javax.swing.JFrame {
 
     private void btn_insertar_productosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_insertar_productosActionPerformed
         // TODO add your handling code here:
-        
-            String nombreProducto = txt_nombre_producto.getText();
-            String descripcion = txt_descripcion.getText();
-            String categoria = combobox_categoria.getSelectedItem().toString();
-            String precio = precio_producto.getText();
-            Conexion conexion = null;
-            
-            
-            if (nombreProducto.isEmpty() || descripcion.isEmpty() || categoria.isEmpty() || precio.isEmpty()){
-                JOptionPane.showMessageDialog(null, "Todos los campos son requerido");
-            } else {
-               try {
-                
-                // coonectando a la base de datos
+        String nombreProducto = txt_nombre_producto.getText();
+        String descripcion = txt_descripcion.getText();
+        String categoria = combobox_categoria.getSelectedItem().toString();
+
+        BigDecimal precio = new BigDecimal(precio_producto.getText());
+
+        if (nombreProducto.isEmpty() || descripcion.isEmpty() || categoria.isEmpty() || precio.compareTo(BigDecimal.ZERO) <= 0) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son requeridos");
+        } else {
+            try {
+
+                // Conectando a la base de datos
                 conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
                 conexion.conectar();
 
-                // insertando a la BD
+                // Insertando a la BD
                 String insertQuery = "INSERT INTO producto (id_categoria, nombre_producto, descripcion, precio) VALUES ((SELECT id_categoria FROM categoria WHERE nombre_categoria = ?), ?, ?, ?)";
                 try (PreparedStatement preparedStatement = conexion.prepareStatement(insertQuery)) {
                     preparedStatement.setString(1, categoria);
                     preparedStatement.setString(2, nombreProducto);
                     preparedStatement.setString(3, descripcion);
-                    preparedStatement.setFloat(4, Float.parseFloat(precio));
+                    preparedStatement.setBigDecimal(4, precio);
 
                     int affectedRows = preparedStatement.executeUpdate();
                     if (affectedRows > 0) {
@@ -361,17 +361,42 @@ public class frm_productos extends javax.swing.JFrame {
                     }
                 }
 
-                // Actuallizando la Jtable
+                // Actualizando la Jtable
                 updateProductTable();
 
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, e);
             } finally {
-                 conexion.desconectar();
+                conexion.desconectar();
             }
         }
     }
 
+        public void llenacomboboxCategorias() {
+            try {
+                Conexion conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                conexion.conectar();
+
+                String query = "SELECT nombre_categoria FROM categoria";
+                try (ResultSet resultSet = conexion.getStatement().executeQuery(query)) {
+                    // Llenar el combo box con las categorías
+                    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+                    model.addElement(""); // Opción en blanco
+                    while (resultSet.next()) {
+                        model.addElement(resultSet.getString("nombre_categoria"));
+                    }
+                    combobox_categoria.setModel(model);
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            } finally {
+                if (conexion != null) {
+                    conexion.desconectar();
+                }
+            }
+        }
+  
+    
         // metodo para actualizar la tabla 
         private void updateProductTable() {
             try {
@@ -390,7 +415,7 @@ public class frm_productos extends javax.swing.JFrame {
                             resultSet.getString("nombre_categoria"),  
                             resultSet.getString("nombre_producto"), 
                             resultSet.getString("descripcion"),  // 
-                            resultSet.getDouble("precio"),
+                            resultSet.getFloat("precio"),
                         };
                         model.addRow(row);
                     }

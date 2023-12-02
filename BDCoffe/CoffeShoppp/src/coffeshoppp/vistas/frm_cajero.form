@@ -32,7 +32,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="241" max="-2" attributes="0"/>
               <Component id="btn_ordenes_cajero" min="-2" pref="224" max="-2" attributes="0"/>
-              <EmptySpace pref="257" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -68,7 +68,7 @@
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="193" max="32767" attributes="0"/>
                   <Component id="btn_close_sesion" min="-2" pref="110" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
