@@ -6,6 +6,7 @@ package coffeshoppp.vistas;
 
 import coffeshoppp.modelo.Conexion;
 import java.awt.event.ActionEvent;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -64,7 +65,6 @@ public class frm_ordenes extends javax.swing.JFrame {
         btn_realizar_orden = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txt_subtotal = new javax.swing.JTextField();
-        btn_modificar = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txt_mesa = new javax.swing.JTextField();
@@ -142,6 +142,11 @@ public class frm_ordenes extends javax.swing.JFrame {
         btn_realizar_orden.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
         btn_realizar_orden.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/_PNG 64/basic_sheet_pencil.png"))); // NOI18N
         btn_realizar_orden.setText("Realizar orden");
+        btn_realizar_orden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_realizar_ordenActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
         jLabel1.setText("Subtotal");
@@ -149,13 +154,6 @@ public class frm_ordenes extends javax.swing.JFrame {
         txt_subtotal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_subtotalActionPerformed(evt);
-            }
-        });
-
-        btn_modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/software_pencil.png"))); // NOI18N
-        btn_modificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_modificarActionPerformed(evt);
             }
         });
 
@@ -184,30 +182,27 @@ public class frm_ordenes extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btn_realizar_orden)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                            .addComponent(btn_realizar_orden)
-                            .addGap(18, 18, 18)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel1)
-                                .addComponent(txt_total, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txt_subtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(6, 6, 6)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel2)
-                                .addComponent(txt_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txt_mesa, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel1)
+                            .addComponent(txt_total, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_subtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel2)
+                            .addComponent(txt_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_mesa, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -216,11 +211,7 @@ public class frm_ordenes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(btn_modificar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_eliminar)))
+                    .addComponent(btn_eliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -240,7 +231,7 @@ public class frm_ordenes extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txt_total, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                     .addComponent(txt_mesa))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_realizar_orden, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -549,10 +540,6 @@ public class frm_ordenes extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btn_regresarActionPerformed
 
-    private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_modificarActionPerformed
-
 
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
@@ -593,6 +580,17 @@ public class frm_ordenes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void btn_realizar_ordenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_realizar_ordenActionPerformed
+        // TODO add your handling code here:
+
+        // Crear la consulta SQL para insertar la orden
+        String QueryOrden = "INSERT INTO orden (id_usuario, id_cliente, mesa, total) VALUES (?, ?, ?, ?)";
+
+        
+        String QueryDetalle = "INSERT INTO orden_detalle (id_orden, id_producto, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)";
+
+    }//GEN-LAST:event_btn_realizar_ordenActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -632,7 +630,7 @@ public class frm_ordenes extends javax.swing.JFrame {
 
         try {
             // Creando y conectando la instancia de la conexión
-            conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+            conexion = new Conexion();
             conexion.conectar();
 
             // Consulta SQL para obtener nombres de categorías
@@ -670,7 +668,7 @@ public class frm_ordenes extends javax.swing.JFrame {
 
         try {
             // Creando y conectando la instancia de la conexión
-            conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+            conexion = new Conexion();
             conexion.conectar();
 
             String query = "SELECT p.id_producto, c.nombre_categoria, p.nombre_producto, p.descripcion, p.precio FROM producto p JOIN categoria c ON p.id_categoria = c.id_categoria";
@@ -810,6 +808,47 @@ public class frm_ordenes extends javax.swing.JFrame {
         }
     }
     
+
+    private static void insertarOrden(int id_usuario, String cliente, String fecha_orden, int id_producto, int cantidad, double precio_unitario) throws SQLException {
+        String sqlOrden = "INSERT INTO orden (id_usuario, cliente, fecha_orden, estado_orden, mesa, total) VALUES (?, ?, ?, ?, ?, ?)";
+        String sqlOrdenDetalle = "INSERT INTO orden_detalle (id_orden, id_producto, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)";
+
+        Conexion conexion = new Conexion();
+        conexion.conectar();
+        
+        try (var pstmtOrden = conexion.prepareStatement(sqlOrden);
+             PreparedStatement pstmtOrdenDetalle = conexion.prepareStatement(sqlOrdenDetalle)) {
+
+            pstmtOrden.setInt(1, id_usuario);
+            pstmtOrden.setString(2, cliente);
+            pstmtOrden.setString(3, fecha_orden);
+            pstmtOrden.setString(4, "Pendiente");
+            pstmtOrden.setInt(5, 1);
+            pstmtOrden.setDouble(6, precio_unitario * cantidad);
+
+            int affectedRows = pstmtOrden.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Error inserting into orden table");
+            }
+
+            ResultSet rs = pstmtOrden.getGeneratedKeys();
+            if (rs.next()) {
+                int id_orden = rs.getInt(1);
+
+                pstmtOrdenDetalle.setInt(1, id_orden);
+                pstmtOrdenDetalle.setInt(2, id_producto);
+                pstmtOrdenDetalle.setInt(3, cantidad);
+                pstmtOrdenDetalle.setDouble(4, precio_unitario);
+                pstmtOrdenDetalle.setDouble(5, precio_unitario * cantidad);
+
+                pstmtOrdenDetalle.executeUpdate();
+            } else {
+                throw new SQLException("Error retrieving generated id for orden table");
+            }
+        }
+    }
+    
     private void limpiarCampos() {
     txt_cantidad.setText("");
     txt_cliente.setText("");
@@ -867,7 +906,6 @@ public class frm_ordenes extends javax.swing.JFrame {
     private javax.swing.JButton btn_agregar_producto;
     private javax.swing.JButton btn_borrar_numero;
     private javax.swing.JButton btn_eliminar;
-    private javax.swing.JButton btn_modificar;
     private javax.swing.JButton btn_realizar_orden;
     private javax.swing.JButton btn_regresar;
     private javax.swing.JComboBox<String> combobox_categorias;

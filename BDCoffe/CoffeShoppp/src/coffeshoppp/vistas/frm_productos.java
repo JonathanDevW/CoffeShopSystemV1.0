@@ -470,7 +470,7 @@ public class frm_productos extends javax.swing.JFrame {
             try {
 
                 // Conectando a la base de datos
-                conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                conexion = new Conexion();
                 conexion.conectar();
 
                 // Insertando a la BD
@@ -503,7 +503,7 @@ public class frm_productos extends javax.swing.JFrame {
 
         public void llenacomboboxCategorias() {
             try {
-                Conexion conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                Conexion conexion = new Conexion();
                 conexion.conectar();
 
                 String query = "SELECT nombre_categoria FROM categoria";
@@ -529,7 +529,7 @@ public class frm_productos extends javax.swing.JFrame {
         // metodo para actualizar la tabla 
         private void updateProductTable() {
             try {
-                Conexion conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                Conexion conexion = new Conexion();
                 conexion.conectar();
 
                 String query = "SELECT p.id_producto, c.nombre_categoria, p.nombre_producto, p.descripcion, p.precio FROM producto p JOIN categoria c ON p.id_categoria = c.id_categoria";
@@ -582,7 +582,7 @@ public class frm_productos extends javax.swing.JFrame {
                try {
                 
                 // coonectando a la base de datos
-                conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                conexion = new Conexion();
                 conexion.conectar();
 
                 // insertando a la BD
@@ -622,7 +622,7 @@ public class frm_productos extends javax.swing.JFrame {
         // TODO add your handling code here:
         int codigo = Integer.parseInt(txt_codigo_producto.getText());
         
-        conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+        conexion = new Conexion();
         conexion.conectar();
         
         String deleteQuery = "DELETE FROM producto WHERE id_producto = "+codigo+";";

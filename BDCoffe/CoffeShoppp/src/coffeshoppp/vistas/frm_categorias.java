@@ -272,7 +272,7 @@ public class frm_categorias extends javax.swing.JFrame {
             try {
 
                 // Conectando a la base de datos
-                conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                conexion = new Conexion();
                 conexion.conectar();
 
                 // Insertando a la BD
@@ -313,7 +313,7 @@ public class frm_categorias extends javax.swing.JFrame {
         private void updateCategoriatTable() {
             Conexion conexion = null;
             try {
-                conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                conexion = new Conexion();
                 conexion.conectar();
 
                 String query = "SELECT id_categoria, nombre_categoria, descripcion FROM categoria";
@@ -354,7 +354,7 @@ public class frm_categorias extends javax.swing.JFrame {
             try {
 
                 // coonectando a la base de datos
-                conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                conexion = new Conexion();
                 conexion.conectar();
 
                 // insertando a la BD
@@ -391,7 +391,7 @@ public class frm_categorias extends javax.swing.JFrame {
         // TODO add your handling code here:
         int codigo = Integer.parseInt(txt_codigo_categoria.getText());
 
-        Conexion conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+        Conexion conexion = new Conexion();
         conexion.conectar();
 
         String deleteQuery = "DELETE FROM categoria WHERE id_categoria = "+codigo+";";

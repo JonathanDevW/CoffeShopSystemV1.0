@@ -270,7 +270,7 @@ public class frm_register extends javax.swing.JFrame {
                     }
                     if (passRegister.equals(passVerification)) {
 
-                        Conexion conexion = new Conexion("sa", "uma", "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                        Conexion conexion = new Conexion();
                         
                         
                         try {

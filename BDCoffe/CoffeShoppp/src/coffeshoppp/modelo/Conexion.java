@@ -9,22 +9,23 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 public class Conexion {
-    private final String usuario;
-    private final String pass;
-    private final String url;
+    private final String usuario = "sa";
+    private final String pass = "uma";
+    private final String url = "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;";
     private Connection cn;
     private Statement st;
+    
     
     public Connection getConnection() {
         return cn;
     }
 
     // Constructor para pasar datos a la conexion
-    public Conexion(String usuario, String pass, String url) {
-        this.usuario = usuario;
-        this.pass = pass;
-        this.url = url;
-    }
+//    public Conexion(String usuario, String pass, String url) {
+//        this.usuario = "sa";
+//        this.pass = "uma";
+//        this.url = "jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;";
+//    }
 
     // Metodo para establece la conexion
     public void conectar() {

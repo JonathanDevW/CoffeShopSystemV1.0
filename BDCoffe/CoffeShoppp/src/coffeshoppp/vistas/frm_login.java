@@ -165,7 +165,7 @@ public class frm_login extends javax.swing.JFrame {
         }else{
             try{
                 //pasando variables a la conexion
-                Conexion conexion = new Conexion("sa","uma","jdbc:sqlserver://localhost:1433;databaseName=CoffeShop;encrypt=false;trustServerCertificate=true;");
+                Conexion conexion = new Conexion();
                 //estableciendo la conexion
                 
                 conexion.conectar();
