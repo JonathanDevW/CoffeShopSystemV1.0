@@ -40,10 +40,6 @@ CREATE TABLE producto (
 	ON UPDATE CASCADE
 );
 
-ALTER TABLE producto
-ALTER COLUMN precio MONEY
-
--- Tabla cliente
 
 -- Tabla orden
 CREATE TABLE orden (
@@ -53,7 +49,7 @@ CREATE TABLE orden (
     fecha_orden DATETIME DEFAULT GETDATE(),
     estado_orden VARCHAR(20),
     mesa INT,
-	total DECIMAL,
+	total MONEY,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) 
 	ON DELETE CASCADE 
 	ON UPDATE CASCADE,
@@ -64,7 +60,8 @@ CREATE TABLE orden_detalle (
     id_orden INT,
     id_producto INT,
     cantidad INT,
-	precio_unitario DECIMAL,
+	precio_unitario MONEY,
+	consumo VARCHAR(40),
 	subtotal MONEY,
     FOREIGN KEY (id_orden) REFERENCES orden(id_orden) 
 	ON DELETE CASCADE 

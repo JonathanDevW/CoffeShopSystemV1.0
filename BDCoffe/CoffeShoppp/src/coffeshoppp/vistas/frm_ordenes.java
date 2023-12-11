@@ -5,14 +5,17 @@
 package coffeshoppp.vistas;
 
 import coffeshoppp.modelo.Conexion;
+import coffeshoppp.modelo.Sesion;
 import java.awt.event.ActionEvent;
-import java.math.BigDecimal;
+import java.beans.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
 import java.text.DecimalFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -119,22 +122,15 @@ public class frm_ordenes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Producto", "Cantidad", "Precio", "Consumo"
+                "Codigo", "Producto", "Cantidad", "Precio", "Consumo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
         });
         jScrollPane2.setViewportView(tabla_oden);
@@ -260,20 +256,20 @@ public class frm_ordenes extends javax.swing.JFrame {
         tabla_productos_ordenes.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
         tabla_productos_ordenes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Producto", "Precio"
+                "Codigo", "Producto", "Precio"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -553,9 +549,6 @@ public class frm_ordenes extends javax.swing.JFrame {
             return;
         }
 
-        // Guarda el valor del producto antes de eliminar la fila
-        double valorProducto = (double) tabla_oden.getValueAt(selectedRowIndex, 2);
-
         // Preguntando al usuario si  quiere eliminar el producto
         int option = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar el producto?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
@@ -581,14 +574,15 @@ public class frm_ordenes extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btn_realizar_ordenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_realizar_ordenActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
 
-        // Crear la consulta SQL para insertar la orden
-        String QueryOrden = "INSERT INTO orden (id_usuario, id_cliente, mesa, total) VALUES (?, ?, ?, ?)";
-
-        
-        String QueryDetalle = "INSERT INTO orden_detalle (id_orden, id_producto, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)";
-
+            insertarOrden();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(frm_ordenes.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al insertar la orden" + ex);
+        }
     }//GEN-LAST:event_btn_realizar_ordenActionPerformed
 
     /**
@@ -607,13 +601,14 @@ public class frm_ordenes extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "La cantidad debe ser un número entero válido");
                 return;
             }
-
+            
+            int codigo = (int) tabla_productos_ordenes.getValueAt(filaSeleccionada, 0);
             String consumo = combobox_consumo.getSelectedItem().toString();
-            String nombreProducto = (String) tabla_productos_ordenes.getValueAt(filaSeleccionada, 0);
-            double precio = (double) tabla_productos_ordenes.getValueAt(filaSeleccionada, 1);
+            String nombreProducto = (String) tabla_productos_ordenes.getValueAt(filaSeleccionada, 1);
+            double precio = (double) tabla_productos_ordenes.getValueAt(filaSeleccionada, 2);
 
             if (cantidad > 0) {
-                Object[] rowData = {nombreProducto, cantidad, precio, consumo};
+                Object[] rowData = {codigo, nombreProducto, cantidad, precio, consumo};
 
                 DefaultTableModel model = (DefaultTableModel) tabla_oden.getModel();
                 model.addRow(rowData);
@@ -689,6 +684,7 @@ public class frm_ordenes extends javax.swing.JFrame {
 
                     while (resultSet.next()) {
                         Object[] row = {
+                            resultSet.getInt("id_producto"),
                             resultSet.getString("nombre_producto"),
                             resultSet.getDouble("precio"),
                         };
@@ -713,8 +709,8 @@ public class frm_ordenes extends javax.swing.JFrame {
 
         for (int i = 0; i < tabla_oden.getRowCount(); i++) {
             // Obteniendo la cantidad y el precio
-            Number cantidadObj = (Number) tabla_oden.getValueAt(i, 1);
-            double precio = Double.parseDouble(tabla_oden.getValueAt(i, 2).toString());
+            Number cantidadObj = (Number) tabla_oden.getValueAt(i, 2);
+            double precio = Double.parseDouble(tabla_oden.getValueAt(i, 3).toString());
 
             // Multiplicando cantidad por precio para obtener el subtotal de la fila
             int cantidad = cantidadObj.intValue();
@@ -808,46 +804,99 @@ public class frm_ordenes extends javax.swing.JFrame {
         }
     }
     
-
-    private static void insertarOrden(int id_usuario, String cliente, String fecha_orden, int id_producto, int cantidad, double precio_unitario) throws SQLException {
-        String sqlOrden = "INSERT INTO orden (id_usuario, cliente, fecha_orden, estado_orden, mesa, total) VALUES (?, ?, ?, ?, ?, ?)";
-        String sqlOrdenDetalle = "INSERT INTO orden_detalle (id_orden, id_producto, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)";
-
-        Conexion conexion = new Conexion();
+    private void insertarOrden() throws SQLException {
+        conexion = new Conexion();
         conexion.conectar();
         
-        try (var pstmtOrden = conexion.prepareStatement(sqlOrden);
-             PreparedStatement pstmtOrdenDetalle = conexion.prepareStatement(sqlOrdenDetalle)) {
+        int id_usuario = obtenerIdUsuarioPorNombre();
+        String cliente = txt_cliente.getText();
+        String mesa = txt_mesa.getText();
+        Double total = Double.parseDouble(txt_total.getText());
 
-            pstmtOrden.setInt(1, id_usuario);
-            pstmtOrden.setString(2, cliente);
-            pstmtOrden.setString(3, fecha_orden);
-            pstmtOrden.setString(4, "Pendiente");
-            pstmtOrden.setInt(5, 1);
-            pstmtOrden.setDouble(6, precio_unitario * cantidad);
+        String sqlOrden = "INSERT INTO orden (id_usuario, cliente, mesa, total) VALUES (?, ?, ?, ?)";
 
-            int affectedRows = pstmtOrden.executeUpdate();
+        try (PreparedStatement preparedStatement = conexion.prepareStatement(sqlOrden)) {
+            preparedStatement.setInt(1, id_usuario);
+            preparedStatement.setString(2, cliente);
+            preparedStatement.setString(3, mesa);
+            preparedStatement.setDouble(4, total);
 
-            if (affectedRows == 0) {
-                throw new SQLException("Error inserting into orden table");
-            }
+            int affectedRows = preparedStatement.executeUpdate();
 
-            ResultSet rs = pstmtOrden.getGeneratedKeys();
-            if (rs.next()) {
-                int id_orden = rs.getInt(1);
+            if (affectedRows > 0) {
 
-                pstmtOrdenDetalle.setInt(1, id_orden);
-                pstmtOrdenDetalle.setInt(2, id_producto);
-                pstmtOrdenDetalle.setInt(3, cantidad);
-                pstmtOrdenDetalle.setDouble(4, precio_unitario);
-                pstmtOrdenDetalle.setDouble(5, precio_unitario * cantidad);
-
-                pstmtOrdenDetalle.executeUpdate();
+                int idOrdenGenerado = obtenerUltimoIdInsertado();
+                JOptionPane.showMessageDialog(null, idOrdenGenerado);
+                ordenDetalle(idOrdenGenerado);
+                JOptionPane.showMessageDialog(null, "Orden agregada correctamente.");
+                limpiarCampos();
             } else {
-                throw new SQLException("Error retrieving generated id for orden table");
+                JOptionPane.showMessageDialog(null, "Error al agregar la orden.");
             }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos" + e);
         }
     }
+
+    private int obtenerUltimoIdInsertado() {
+        try  {
+            Conexion conexion = new Conexion();
+            conexion.conectar();
+            int ultimoIdIngresado = -1;
+            String sql = "SELECT SCOPE_IDENTITY() AS last_id";
+
+            try (PreparedStatement preparedStatement = conexion.prepareStatement(sql);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    ultimoIdIngresado = resultSet.getInt("last_id");
+                }
+            }
+
+            return ultimoIdIngresado;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al obtener el último ID insertado: " + e.getMessage());
+            return -1;
+        }
+    }
+    
+    private void ordenDetalle(int idOrden) {
+        String sqlOrdenDetalle = "INSERT INTO orden_detalle (id_orden, id_producto, cantidad, precio_unitario, consumo, subtotal) VALUES (?, ?, ?, ?, ?, ?)";
+
+        DefaultTableModel modeloOrden = (DefaultTableModel) tabla_oden.getModel();
+
+        conexion = new Conexion();
+        conexion.conectar();
+
+        try (PreparedStatement preparedStatement = conexion.prepareStatement(sqlOrdenDetalle)) {
+            int rowCount = modeloOrden.getRowCount();
+
+            for (int i = 0; i < rowCount; i++) {
+                preparedStatement.setInt(1, idOrden);
+                preparedStatement.setInt(2, (int) modeloOrden.getValueAt(i, 0));
+                preparedStatement.setInt(3, (int) modeloOrden.getValueAt(i, 2));  // Adjust index based on your table structure
+                preparedStatement.setDouble(4, (double) modeloOrden.getValueAt(i, 3));  // Adjust index based on your table structure
+
+                preparedStatement.setString(5, (String) modeloOrden.getValueAt(i, 4));
+
+                // Move the subtotal calculation inside the loop
+                double cantidad = (int) modeloOrden.getValueAt(i, 2);
+                double PrecioPorProducto = (double) modeloOrden.getValueAt(i, 3);
+                double subtotal = cantidad * PrecioPorProducto;
+
+                preparedStatement.setDouble(6, subtotal);
+
+                int affectedRows = preparedStatement.executeUpdate();
+                if (affectedRows > 0) {
+                    limpiarCampos();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al agregar el producto.");
+                }
+            }
+        } catch (SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos" + e);
+        }
+    }
+
     
     private void limpiarCampos() {
     txt_cantidad.setText("");
@@ -858,6 +907,40 @@ public class frm_ordenes extends javax.swing.JFrame {
     // Limpia la tabla
     DefaultTableModel model = (DefaultTableModel) tabla_oden.getModel();
     model.setRowCount(0);
+    }
+    
+
+    
+    public int obtenerIdUsuarioPorNombre() {
+        
+        String nombreUsuario = Sesion.getNombreUsuario();
+        Conexion conexion = new Conexion();
+        
+        int idUsuario = -1;
+
+        try {
+            conexion.conectar();
+
+            String sql = "SELECT id_usuario FROM usuario WHERE login = ?";
+            try (PreparedStatement pstmt = conexion.getConnection().prepareStatement(sql)) {
+                pstmt.setString(1, nombreUsuario);
+
+                try (ResultSet resultSet = pstmt.executeQuery()) {
+                    if (resultSet.next()) {
+                        idUsuario = resultSet.getInt("id_usuario");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener el ID de usuario: " + e.getMessage());
+        } finally {
+            if (conexion != null) {
+                conexion.desconectar();
+            }
+        }
+
+        return idUsuario;
     }
     
     
