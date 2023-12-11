@@ -4,14 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/MINEDUCYT/Desktop/CoffeShopSystemV1.0/BDCoffe/CoffeShoppp/src/coffeshoppp/modelo/Conexion.java</file>
-            <file>file:/C:/Users/MINEDUCYT/Desktop/CoffeShopSystemV1.0/BDCoffe/CoffeShoppp/src/coffeshoppp/vistas/frm_pedidos.java</file>
             <file>file:/C:/Users/MINEDUCYT/Desktop/CoffeShopSystemV1.0/BDCoffe/CoffeShoppp/src/coffeshoppp/vistas/frm_ordenes.java</file>
-            <file>file:/C:/Users/MINEDUCYT/Desktop/CoffeShopSystemV1.0/BDCoffe/CoffeShoppp/src/coffeshoppp/vistas/frm_usuarios.java</file>
             <file>file:/C:/Users/MINEDUCYT/Desktop/CoffeShopSystemV1.0/BDCoffe/CoffeShoppp/src/coffeshoppp/vistas/frm_productos.java</file>
             <file>file:/C:/Users/MINEDUCYT/Desktop/CoffeShopSystemV1.0/BDCoffe/CoffeShoppp/src/coffeshoppp/vistas/frm_inicio.java</file>
             <file>file:/C:/Users/MINEDUCYT/Desktop/CoffeShopSystemV1.0/BDCoffe/CoffeShoppp/src/coffeshoppp/vistas/frm_categorias.java</file>
             <file>file:/C:/Users/MINEDUCYT/Desktop/CoffeShopSystemV1.0/BDCoffe/CoffeShoppp/src/coffeshoppp/modelo/Sesion.java</file>
-            <file>file:/C:/Users/MINEDUCYT/Desktop/CoffeShopSystemV1.0/BDCoffe/CoffeShoppp/src/coffeshoppp/vistas/frm_register.java</file>
+            <file>file:/C:/Users/MINEDUCYT/Desktop/CoffeShopSystemV1.0/BDCoffe/CoffeShoppp/src/coffeshoppp/vistas/frm_mirecord.java</file>
         </group>
     </open-files>
 </project-private>
