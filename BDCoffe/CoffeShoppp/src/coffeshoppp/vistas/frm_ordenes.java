@@ -652,11 +652,6 @@ public class frm_ordenes extends javax.swing.JFrame {
         }
     }
 
-/**
- * Method to update the table of products based on the selected category.
- * @param categoriaSelected The selected category.
- */
-
 
     private void actualizarTablaProductos(String categoriaSeleccionada) {
         Conexion conexion = null;
@@ -813,7 +808,7 @@ public class frm_ordenes extends javax.swing.JFrame {
         String mesa = txt_mesa.getText();
         Double total = Double.parseDouble(txt_total.getText());
 
-        String sqlOrden = "INSERT INTO orden (id_usuario, cliente, mesa, total) VALUES (?, ?, ?, ?)";
+        String sqlOrden = "INSERT INTO orden (id_usuario, cliente, mesa, total) VALUES (?, ?, ?, ?);";
 
         try (PreparedStatement preparedStatement = conexion.prepareStatement(sqlOrden)) {
             preparedStatement.setInt(1, id_usuario);
@@ -824,10 +819,7 @@ public class frm_ordenes extends javax.swing.JFrame {
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows > 0) {
-
-                int idOrdenGenerado = obtenerUltimoIdInsertado();
-                JOptionPane.showMessageDialog(null, idOrdenGenerado);
-                ordenDetalle(idOrdenGenerado);
+                ordenDetalle();
                 JOptionPane.showMessageDialog(null, "Orden agregada correctamente.");
                 limpiarCampos();
             } else {
@@ -838,64 +830,58 @@ public class frm_ordenes extends javax.swing.JFrame {
         }
     }
 
-    private int obtenerUltimoIdInsertado() {
-        try  {
-            Conexion conexion = new Conexion();
-            conexion.conectar();
-            int ultimoIdIngresado = -1;
-            String sql = "SELECT SCOPE_IDENTITY() AS last_id";
-
-            try (PreparedStatement preparedStatement = conexion.prepareStatement(sql);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    ultimoIdIngresado = resultSet.getInt("last_id");
-                }
-            }
-
-            return ultimoIdIngresado;
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al obtener el último ID insertado: " + e.getMessage());
-            return -1;
-        }
-    }
     
-    private void ordenDetalle(int idOrden) {
+    private void ordenDetalle() {
         String sqlOrdenDetalle = "INSERT INTO orden_detalle (id_orden, id_producto, cantidad, precio_unitario, consumo, subtotal) VALUES (?, ?, ?, ?, ?, ?)";
+        String SqlIdOrden = "SELECT SCOPE_IDENTITY() AS last_id";
 
         DefaultTableModel modeloOrden = (DefaultTableModel) tabla_oden.getModel();
 
         conexion = new Conexion();
         conexion.conectar();
 
-        try (PreparedStatement preparedStatement = conexion.prepareStatement(sqlOrdenDetalle)) {
-            int rowCount = modeloOrden.getRowCount();
-
-            for (int i = 0; i < rowCount; i++) {
-                preparedStatement.setInt(1, idOrden);
-                preparedStatement.setInt(2, (int) modeloOrden.getValueAt(i, 0));
-                preparedStatement.setInt(3, (int) modeloOrden.getValueAt(i, 2));  // Adjust index based on your table structure
-                preparedStatement.setDouble(4, (double) modeloOrden.getValueAt(i, 3));  // Adjust index based on your table structure
-
-                preparedStatement.setString(5, (String) modeloOrden.getValueAt(i, 4));
-
-                // Move the subtotal calculation inside the loop
-                double cantidad = (int) modeloOrden.getValueAt(i, 2);
-                double PrecioPorProducto = (double) modeloOrden.getValueAt(i, 3);
-                double subtotal = cantidad * PrecioPorProducto;
-
-                preparedStatement.setDouble(6, subtotal);
-
-                int affectedRows = preparedStatement.executeUpdate();
-                if (affectedRows > 0) {
-                    limpiarCampos();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al agregar el producto.");
+        try {
+            // Get the last inserted ID
+            int ultimoIdIngresado = -1;
+            try (PreparedStatement id = conexion.prepareStatement(SqlIdOrden);
+                 ResultSet resultSet = id.executeQuery()) {
+                if (resultSet.next()) {
+                    ultimoIdIngresado = resultSet.getInt("last_id");
                 }
             }
-        } catch (SQLException e){
+
+            try (PreparedStatement preparedStatement = conexion.prepareStatement(sqlOrdenDetalle)) {
+                int rowCount = modeloOrden.getRowCount();
+
+                for (int i = 0; i < rowCount; i++) {
+                    preparedStatement.setInt(1, ultimoIdIngresado);
+                    preparedStatement.setInt(2, (int) modeloOrden.getValueAt(i, 0));
+                    preparedStatement.setInt(3, (int) modeloOrden.getValueAt(i, 2));
+                    preparedStatement.setDouble(4, (double) modeloOrden.getValueAt(i, 3));
+                    preparedStatement.setString(5, (String) modeloOrden.getValueAt(i, 4));
+
+                    double cantidad = (int) modeloOrden.getValueAt(i, 2);
+                    double PrecioPorProducto = (double) modeloOrden.getValueAt(i, 3);
+                    double subtotal = cantidad * PrecioPorProducto;
+
+                    preparedStatement.setDouble(6, subtotal);
+
+                    int affectedRows = preparedStatement.executeUpdate();
+                    if (affectedRows > 0) {
+                        limpiarCampos();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al agregar el producto.");
+                    }
+                }
+            }
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos" + e);
+        } finally {
+            // Close resources or connection if needed
+            conexion.desconectar();
         }
     }
+
 
     
     private void limpiarCampos() {
